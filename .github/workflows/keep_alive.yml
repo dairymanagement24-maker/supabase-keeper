@@ -1,0 +1,19 @@
+name: Supabase 24/7 Keep Alive
+
+on:
+  schedule:
+    # दर ३ दिवसांनी आपोआप चालू राहील
+    - cron: '0 4 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        run: |
+          echo "Pinging Supabase to keep project active..."
+          curl -s -o /dev/null -w "%{http_code}\n" \
+            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx0bGN4cXZucWdxcHlhcWptaGZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc2NjI1MDQsImV4cCI6MjEwMzIzODUwNH0.vgfrc7kA2HYUaVqfXXr1Tx6SAACZUGPKAesnioXctig" \
+            "https://ltlcxqvnqgqpyaqjmhfu.supabase.co/rest/v1/subscription_plans?select=id&limit=1"
+          echo "Supabase successfully pinged! Inactivity timer reset."
